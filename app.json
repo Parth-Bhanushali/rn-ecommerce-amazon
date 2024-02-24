@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "rn-ecommerce-amazon",
+    "slug": "rn-ecommerce-amazon",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "rn-ecommerce-amazon"
+}

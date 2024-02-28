@@ -1,3 +1,5 @@
+const { MONGO_DB_URL, NODEMAILER_USER, NODEMAILER_PASS, BASE_URL } = require('dotenv').config().parsed
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -16,7 +18,7 @@ app.use(bodyParser.json());
 // initialize json web token
 const jwt = require("jsonwebtoken");
 
-const url = "mongodb+srv://princebhanushali:Qwerty123@cluster0.p1yrmld.mongodb.net/";
+const url = MONGO_DB_URL;
 
 mongoose.connect(url, {
     useNewUrlParser: true,
@@ -42,12 +44,12 @@ const sendVerificationEmail= async (email, verificationToken) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "princebhanushali6@gmail.com",
-            pass: "password123456789"    // enter 2FA passcode here, 16 digit string
+            user: NODEMAILER_USER,
+            pass: NODEMAILER_PASS
         }
     });
 
-    const verificationLink = `http://localhost:8000/verify/${verificationToken}`;
+    const verificationLink = `${BASE_URL}/verify/${verificationToken}`;
 
     // compose the email
     const mailOptions = {
@@ -62,6 +64,8 @@ const sendVerificationEmail= async (email, verificationToken) => {
         await transporter.sendMail(mailOptions);
     } catch (error) {
         console.log("Error sending verification email", error);
+    } finally {
+        console.log('Verification link sent!')
     }
 }
 

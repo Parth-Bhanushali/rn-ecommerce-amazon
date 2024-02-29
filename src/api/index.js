@@ -64,8 +64,6 @@ const sendVerificationEmail= async (email, verificationToken) => {
         await transporter.sendMail(mailOptions);
     } catch (error) {
         console.log("Error sending verification email", error);
-    } finally {
-        console.log('Verification link sent!')
     }
 }
 
@@ -91,6 +89,8 @@ app.post("/register", async (req, res) => {
 
         // send verification email to user
         sendVerificationEmail(newUser.email, newUser.verificationToken);
+
+        res.status(201).json({ message: "Verification link has been sent to your mail id." })
     } catch (error) {
         console.log("Error registering user: ", error);
         res.status(500).json({ message: "Registration failed" })

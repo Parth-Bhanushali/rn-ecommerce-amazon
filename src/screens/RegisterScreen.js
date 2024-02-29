@@ -1,7 +1,9 @@
-import { StyleSheet, Text, View, SafeAreaView, Pressable, Image, TextInput, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Pressable, Image, TextInput, KeyboardAvoidingView, Alert } from 'react-native'
 import React from 'react'
 import { AntDesign, MaterialIcons, FontAwesome } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import axios from 'axios'
+import { BASE_URL } from '@env' 
 
 const RegisterScreen = () => {
   const [name, setName] = React.useState("");
@@ -9,6 +11,31 @@ const RegisterScreen = () => {
   const [password, setPassword] = React.useState("");
 
   const navigation = useNavigation();
+
+  function handleRegister () {
+    const userPayload = {
+      name: name,
+      email: email,
+      password: password
+    }
+
+    // send a post request to backend api
+    axios.post(`${BASE_URL}/register`, userPayload)
+      .then(res => {
+        console.log(res.data);
+
+        Alert.alert("Registration successful", "You've registered successfully. Please verify the mail id now.");
+
+        setName("");
+        setEmail("");
+        setPassword("");
+      })
+      .catch(err => {
+        console.log("Registration failed:", err.response.data.message);
+        
+        Alert.alert("Registration error", err.response.data.message);
+      })
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>
@@ -72,7 +99,7 @@ const RegisterScreen = () => {
 
         <View style={{ marginTop: 56 }} />
 
-        <Pressable style={{ width: 200, backgroundColor: '#FEBE10', marginLeft: 'auto', marginRight: 'auto', borderRadius: 6, padding: 16}}>
+        <Pressable onPress={handleRegister} style={{ width: 200, backgroundColor: '#FEBE10', marginLeft: 'auto', marginRight: 'auto', borderRadius: 6, padding: 16}}>
           <Text style={{ textAlign: 'center', color: 'black', opacity: 0.75, fontSize: 16, fontWeight: 'bold' }}>Register</Text>
         </Pressable>
 

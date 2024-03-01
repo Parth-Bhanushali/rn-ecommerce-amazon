@@ -6,13 +6,13 @@ import axios from 'axios'
 import { BASE_URL } from '@env'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-var tokenAvailabilityChecked = false;
-
 const LoginScreen = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const navigation = useNavigation();
+
+  const [tokenAvailabilityChecked, setTokenAvailabilityChecked] = React.useState(false);
 
   React.useEffect(() => {
     const checkLoginStatus = async () => {
@@ -20,12 +20,12 @@ const LoginScreen = () => {
         const token = await AsyncStorage.getItem("authToken");
 
         if (!!token) {
-          navigation.replace("Main");
+           navigation.replace("Main");
         }
       } catch (err) {
         console.log("", err)
       } finally {
-        tokenAvailabilityChecked = true;
+        setTokenAvailabilityChecked(true);
       }
     }
 

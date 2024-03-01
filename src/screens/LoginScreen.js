@@ -6,11 +6,31 @@ import axios from 'axios'
 import { BASE_URL } from '@env'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+var tokenAvailabilityChecked = false;
+
 const LoginScreen = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const navigation = useNavigation();
+
+  React.useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const token = await AsyncStorage.getItem("authToken");
+
+        if (!!token) {
+          navigation.replace("Main");
+        }
+      } catch (err) {
+        console.log("", err)
+      } finally {
+        tokenAvailabilityChecked = true;
+      }
+    }
+
+    checkLoginStatus();
+  }, [])
 
   function handleLogin () {
     const userPayload = {
@@ -25,13 +45,15 @@ const LoginScreen = () => {
 
         AsyncStorage.setItem("authToken", token);
 
-        navigation.replace("Home");
+        navigation.replace("Main");
       })
       .catch(err => {
         Alert.alert("Login Error", err.response.data.message);
         console.log(err.response.data);
       })
   }
+
+  if (!tokenAvailabilityChecked) return;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white', alignItems: 'center' }}>

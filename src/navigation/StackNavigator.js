@@ -1,4 +1,5 @@
 import React from 'react'
+import { Platform } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { LoginScreen, RegisterScreen, HomeScreen } from '../screens'
@@ -11,7 +12,16 @@ const StackNavigator = () => {
 
     const BottomTabs = () => {
         return (
-            <Tab.Navigator>
+            <Tab.Navigator 
+                screenOptions={
+                    Platform.OS == 'android' && {
+                        tabBarStyle: {
+                            paddingBottom: 4,
+                            paddingTop: 0,
+                            height: 50
+                        }}
+                }
+            >
                 <Tab.Screen 
                     name="Home" component={HomeScreen} 
                     options={{
@@ -22,7 +32,7 @@ const StackNavigator = () => {
                         tabBarIcon: ({ focused }) => 
                             focused 
                                 ? ( <Entypo name="home" size={24} color="#008E97" /> ) 
-                                : ( <AntDesign name="home" size={24} color="black" /> ),
+                                : ( <Ionicons name="home-outline" size={22} color="black" /> ),
                         headerShown: false
                     }} 
                  />

@@ -170,3 +170,5 @@ export const offers = [
         size: "8GB RAM, 128GB Storage",
     },
 ];
+
+export const fakeProductsUrl = 'https://fakestoreapi.com/products'

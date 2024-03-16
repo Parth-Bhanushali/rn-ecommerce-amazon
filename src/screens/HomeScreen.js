@@ -5,9 +5,18 @@ import { SliderBox } from 'react-native-image-slider-box';
 import axios from 'axios'
 import ProductItem from '../components/ProductItem'
 import { categories, carouselImages, deals, offers, fakeProductsUrl } from '../data/dummy'
+import DropDownPicker from 'react-native-dropdown-picker';
 
 const HomeScreen = () => {
   const [products, setProducts] = useState()
+  const [open, setOpen] = useState(false)
+  const [category, setCategory] = useState("jewelery")
+  const [items, setItems] = useState([
+    { label: "Men's clothing", value: "men's clothing" },
+    { label: "Jewelery", value: "jewelery" },
+    { label: "Electronics", value: "electronics" },
+    { label: "Women's clothing", value: "women's clothing" },
+  ])
 
   React.useEffect(() => {
     async function fetchData() {
@@ -21,6 +30,10 @@ const HomeScreen = () => {
 
     fetchData()
   }, [])
+
+  const onCategoryOpen = React.useCallback(() => {
+    // setCompanyOpen(false)
+  })
 
   return (
     <SafeAreaView 
@@ -82,7 +95,7 @@ const HomeScreen = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-around', width: '100%' }}>
           {
             deals.map((item, index) => (
-              <Pressable style={{ marginVertical: 10 }}>
+              <Pressable key={index} style={{ marginVertical: 10 }}>
                 <Image 
                   source={{ uri: item?.image }}
                   style={{ width: 200, height: 200 }}
@@ -122,9 +135,24 @@ const HomeScreen = () => {
 
         <View style={{ borderWidth: 1, borderColor: '#D0D0D0', height: 1, marginVertical: 8 }} />
 
+        <View style={{ marginHorizontal: 12, marginTop: 12, width: '45%', marginBottom: open ? 50: 15 }}>
+          <DropDownPicker 
+            style={{ borderColor: '#B7B7B7', height: 30, marginBottom: open ? 140 : 15 }}
+            open={open} setOpen={setOpen}
+            value={category} setValue={setCategory}
+            items={items} setItems={setItems}
+            placeholder='Choose category'
+            placeholderStyle={styles.placeholderStyle}
+            onOpen={onCategoryOpen}
+            zIndex={3000}
+            zIndexInverse={1000}
+          />
+        </View>
+
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap'}}>
           {
-            products?.map((item, index) => (
+            products?.filter((item) => item.category === category)
+              ?.map((item, index) => (
               <View key={index} style={{ marginVertical: 12 }}>
                 <ProductItem item={item} />
               </View>

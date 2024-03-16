@@ -13,7 +13,7 @@ export default function ProductItem({item}) {
       <Text numberOfLines={1} style={{ width: 150, marginTop: 10 }}>{item?.title}</Text>
     
       <View style={{ marginTop: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{item?.price}</Text>
+        <Text style={{ fontSize: 15, fontWeight: 'bold' }}>₹ {item?.price}</Text>
         <Text style={{ color: 'gray', fontWeight: 'bold' }}>{item?.rating?.rate} ratings</Text>
       </View>
 

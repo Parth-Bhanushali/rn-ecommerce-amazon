@@ -6,6 +6,8 @@ import axios from 'axios'
 import ProductItem from '../components/ProductItem'
 import { categories, carouselImages, deals, offers, fakeProductsUrl } from '../data/dummy'
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useNavigation } from '@react-navigation/native';
+import HomeHeader from '../components/HomeHeader'
 
 const HomeScreen = () => {
   const [products, setProducts] = useState()
@@ -17,6 +19,8 @@ const HomeScreen = () => {
     { label: "Electronics", value: "electronics" },
     { label: "Women's clothing", value: "women's clothing" },
   ])
+
+  const navigation = useNavigation()
 
   React.useEffect(() => {
     async function fetchData() {
@@ -42,18 +46,7 @@ const HomeScreen = () => {
       }}
     >
       <ScrollView>
-        <View style={{ backgroundColor: '#00CED1', padding: 10, flexDirection: 'row', alignItems: 'center',}}>
-          <Pressable style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 8, gap: 10, backgroundColor: 'white', borderRadius: 3, height: 40, flex: 1}}>
-            <AntDesign name='search1' size={20} color={'black'} style={{ paddingLeft: 10 }} />
-            <TextInput 
-              placeholder='Search amazon.in'
-            />
-          </Pressable>
-
-          <Pressable style={{ flexDirection: 'row', alignItems: 'center', height: 40}}>
-            <Feather name='mic' size={22} color={'black'} style={{ paddingHorizontal: 10 }} />
-          </Pressable>
-        </View>
+        <HomeHeader />
 
         <Pressable style={{ flexDirection: 'row', alignItems: 'center', gap: 8, padding: 10, backgroundColor: '#AFEEEE', }}>
           <Ionicons name='location-outline' size={20} color={'black'} />
@@ -113,7 +106,20 @@ const HomeScreen = () => {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {
             offers.map((item, index) => (
-              <Pressable key={index} style={{ marginTop: 16, marginBottom: 16, alignItems: 'center', justifyContent: 'center' }}>
+              <Pressable 
+                onPress={() => navigation.navigate("ProductInfo", {
+                  id: item.id,
+                  title: item.title,
+                  price: item?.price,
+                  carouselImages: item.carouselImages,
+                  color: item?.color,
+                  size: item?.size,
+                  oldPrice: item?.oldPrice,
+                  item: item,
+                })}
+                key={index} 
+                style={{ marginTop: 16, marginBottom: 16, alignItems: 'center', justifyContent: 'center' }}
+              >
                 <Image
                   source={{ uri: item?.image }}
                   style={{ width: 150, height: 150 }}

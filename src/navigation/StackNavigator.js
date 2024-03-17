@@ -2,7 +2,7 @@ import React from 'react'
 import { Platform } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { LoginScreen, RegisterScreen, HomeScreen } from '../screens'
+import { LoginScreen, RegisterScreen, HomeScreen, ProductInfoScreen } from '../screens'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Entypo, AntDesign, Ionicons } from '@expo/vector-icons'
 
@@ -76,6 +76,7 @@ const StackNavigator = () => {
                 <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
                 <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
                 <Stack.Screen name="Main" component={BottomTabs} options={{ headerShown: false }} />
+                <Stack.Screen name="ProductInfo" component={ProductInfoScreen} options={{ headerShown: false }} />
             </Stack.Navigator>
         </NavigationContainer>
     )

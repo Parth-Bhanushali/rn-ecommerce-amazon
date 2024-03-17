@@ -3,12 +3,29 @@ import React from 'react'
 import HomeHeader from '../components/HomeHeader'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { MaterialCommunityIcons, AntDesign, Ionicons } from '@expo/vector-icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart, removeFromCart } from '../redux/CartReducer'
 
 const ProductInfoScreen = () => {
-    const route = useRoute()
     const { width } = Dimensions.get('window')
-    const navigation = useNavigation()
     const height = width
+
+    const navigation = useNavigation()
+    const route = useRoute()
+    const dispatch = useDispatch()
+    const cart = useSelector(state => state.cart.cart)
+
+    function handleOnAddToCart() {
+        const item = route?.params?.item
+        dispatch(addToCart(item))
+    }
+    function handleOnRemoveFromCart() {
+        const item = route?.params?.item
+        dispatch(removeFromCart(item))
+    }
+    console.log(cart.length)
+
+    const isAddedToCart = cart.find(item => item.id === route?.params?.item?.id)
 
     return (
         <SafeAreaView
@@ -80,11 +97,25 @@ const ProductInfoScreen = () => {
 
                 <Text style={{ color: 'green', marginHorizontal: 12, marginBottom: 8, fontWeight: '500' }}>In stock</Text>
 
-                <Pressable style={{ backgroundColor: '#FFC72C', padding: 10, borderRadius: 20, justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                    <Text>Add to cart</Text>
-                </Pressable>
-
-                <Pressable style={{ backgroundColor: '#FFC72C', padding: 10, borderRadius: 20, justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                {
+                    !isAddedToCart ?
+                    <Pressable
+                        onPress={handleOnAddToCart}
+                        style={{ backgroundColor: '#FFC72C', padding: 10, borderRadius: 20, justifyContent: 'center', alignItems: 'center', margin: 10 }}
+                    >
+                        <Text>Add to cart</Text>
+                    </Pressable>
+                    :
+                    <Pressable
+                        onPress={handleOnRemoveFromCart}
+                        style={{ backgroundColor: 'crimson', padding: 10, borderRadius: 20, justifyContent: 'center', alignItems: 'center', margin: 10 }}
+                    >
+                        <Text style={{ color: 'white' }}>Remove from Cart</Text>
+                    </Pressable>
+                }
+                <Pressable
+                    style={{ backgroundColor: '#FFC72C', padding: 10, borderRadius: 20, justifyContent: 'center', alignItems: 'center', margin: 10 }}
+                >
                     <Text>Buy now</Text>
                 </Pressable>
             </ScrollView>

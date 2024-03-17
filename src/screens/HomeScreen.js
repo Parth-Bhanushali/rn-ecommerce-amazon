@@ -8,6 +8,7 @@ import { categories, carouselImages, deals, offers, fakeProductsUrl } from '../d
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
 import HomeHeader from '../components/HomeHeader'
+import { useSelector } from 'react-redux';
 
 const HomeScreen = () => {
   const [products, setProducts] = useState()
@@ -21,6 +22,8 @@ const HomeScreen = () => {
   ])
 
   const navigation = useNavigation()
+  const cart = useSelector(state => state.cart.cart)  // state -> cart reducer (defined in store) -> cart (data array defined in CartReducer) 
+  console.log(cart)
 
   React.useEffect(() => {
     async function fetchData() {
